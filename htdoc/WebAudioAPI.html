@@ -1,22 +1,29 @@
 <html>
 
 <head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
 <title>Web Audio API Test</title>
 
 <script src="WebAudioAPI.js"></script>
 
 </head>
 
-<body onload="start()">
+<body onload="start(&quot;instrument&quot;)" style="margin: 0pt;">
+
+<canvas id="instrument" style="background-color: grey; margin: 0pt; border: 0pt; padding: 0pt;">
+</canvas>
 
 <form name="control">
+<textarea name="message" readonly rows="1" cols="40"></textarea>
 <label>power:
 <input type="range" name="power" value="0" min="0" max="1" step="1" oninput="setPower(parseInt(this.value))">
 </label>
 <label>gain:
 <input type="range" name="gain" value="0.05" min="0" max="1" step="0.01" oninput="setGain(parseFloat(this.value))">
 </label>
-<label>
+<label>wave form:
 <select name="wave" onchange="setWaveForm(this.value)">
 <option value="sine">サイン波</option>
 <option value="square">矩形波</option>
@@ -56,9 +63,6 @@
 <td colspan="2"><input type="button" onclick="setFrequency(440 * Math.pow(2, 3 / 12))">
 </table>
 </form>
-
-<canvas id="instrument" style="background-color: grey;">
-</canvas>
 
 </body>
 
