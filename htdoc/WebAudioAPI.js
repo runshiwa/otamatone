@@ -6,7 +6,7 @@ var octaveOffset = 1;
 var octaveRange = 1;
 var keyColor = [1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0];
 
-var controlByMouse = false;
+var controlByMouse = true;
 var controlByTouch = true;
 
 function start(name){
@@ -118,12 +118,13 @@ function draw(event){
 
     var context = event.target.getContext("2d");
 
-    if(event.offsetX && event.offsetY)
+    if(event instanceof MouseEvent)
 	context.fillRect(event.offsetX, event.offsetY, 5, 5);
-    for(var i = 0; i < event.targetTouches.length; i++){
-	document.control.message.value = "touch[" + i + "]=(" + event.targetTouches[i].pageX + ", " + event.targetTouches[i].pageY + ")";
-	context.fillRect(event.targetTouches[i].pageX - getOffsetLeft(event.target), event.targetTouches[i].pageY - getOffsetTop(event.target), 5, 5);
-    }
+    else if(event instanceof TouchEvent)
+	for(var i = 0; i < event.targetTouches.length; i++){
+	    document.control.message.value = "touch[" + i + "]=(" + event.targetTouches[i].pageX + ", " + event.targetTouches[i].pageY + ")";
+	    context.fillRect(event.targetTouches[i].pageX - getOffsetLeft(event.target), event.targetTouches[i].pageY - getOffsetTop(event.target), 5, 5);
+	}
 }
 
 function noteOn(event){
@@ -137,18 +138,19 @@ function noteOff(event){
 
 function modulate(event){
     var x, y;
-    if(event.offsetX && event.offsetY){
+    if(event instanceof MouseEvent){
 	x = event.offsetX;
 	y = event.offsetY;
     }
-    for(var i = 0; i < event.targetTouches.length; i++){
-	x = event.targetTouches[i].pageX - getOffsetLeft(event.target);
-	y = event.targetTouches[i].pageY - getOffsetTop(event.target);
-    }
+    else if(event instanceof TouchEvent)
+	for(var i = 0; i < event.targetTouches.length; i++){
+	    x = event.targetTouches[i].pageX - getOffsetLeft(event.target);
+	    y = event.targetTouches[i].pageY - getOffsetTop(event.target);
+	}
 
     var w = (x - canvas.width / 2) / (canvas.width / 2);
     var h = (y - canvas.height / 2) / (canvas.height / 2);
-    //console.log("w=" + w + " h=" + h);
+    console.log("w=" + w + " h=" + h);
 
     var f, d;
     if(!digital){
